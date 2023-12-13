@@ -1,39 +1,19 @@
 <template>
-  <button @click="addLike">Like</button>
-  <button @click="addDisLike">dislike</button>
-  <div>
-    Our likes: <strong>{{ likes }}</strong>
-  </div>
-  <div>
-    Our dislikes: <strong>{{ dislikes }}</strong>
-  </div>
+  <Liker :likes="likes" :dislikes="dislikes"/>
   <hr/>
-  <form @submit.prevent>
-    <h4>Create a new post</h4>
-    <input 
-      v-model="title" 
-      type="text" 
-      class="input" 
-      placeholder="Add Title">
-    <input 
-      v-model="body" 
-      type="text" 
-      class="input" 
-      placeholder="Add Text">
-    <button class="btn" @click="createPost">Add new post</button>
-  </form>
-  <div class="post" v-for="post in posts">
-    <div>
-      Post title: <strong>{{ post.title }}</strong>
-    </div>
-    <div>
-      Post text: <strong>{{ post.body }}</strong>
-    </div>
-  </div>
+  <PostForm @create="createPost"/>
+  <PostList :posts="posts" />
 </template>
 
 <script>
+import PostForm from './components/PostForm.vue'
+import PostList from '@/components/PostList.vue'
+import Liker from '@/components/Liker.vue'
+
 export default {
+  components: {
+    PostForm, PostList, Liker
+  },
   data() {
     return {
       likes: 0,
@@ -42,29 +22,12 @@ export default {
         {id: 1, title: 'vue', body: 'asdflasjd asdfj;askdjf asdfasdf asdf'},
         {id: 2, title: 'react', body: 'lorem asdfasdfas asdfasd afsd'},
         {id: 3, title: 'angular', body: 'asdflasjd asdfj;askdjf '}
-      ],
-      title: '',
-      body: ''
+      ]
     }
   },
   methods: {
-    addLike() {
-      this.likes++
-    },
-    addDisLike() {
-      this.dislikes++
-    },
-    createPost() {
-      const newPost = {
-        id: Date.now(),
-        title: this.title,
-        body: this.body
-      }
-      if(this.title && this.body) {
-        this.posts.push(newPost)
-        this.title = '';
-        this.body = '';
-      }
+    createPost(post) {
+      this.posts.push(post);
     }
   }
 }
@@ -79,21 +42,7 @@ export default {
 body {
   margin: 15px;
 }
-.post {
-  padding: 15px;
-  border: 2px solid green;
-  margin-top: 15px;
-}
-form {
-  display: flex;
-  flex-direction: column;
-  margin-top: 15px;
-}
-.input {
-  border: 1px solid green;
-  padding: 10px 15px;
-  margin-top: 15px;
-}
+
 .btn {
   color: #42b983;
   position: relative;
@@ -116,5 +65,8 @@ form {
 .btn:hover {
     cursor: pointer;
     opacity: 0.8;
+}
+.btn:active {
+    box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.3);
 }
 </style>
