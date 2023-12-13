@@ -1,85 +1,120 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+  <button @click="addLike">Like</button>
+  <button @click="addDisLike">dislike</button>
+  <div>
+    Our likes: <strong>{{ likes }}</strong>
+  </div>
+  <div>
+    Our dislikes: <strong>{{ dislikes }}</strong>
+  </div>
+  <hr/>
+  <form @submit.prevent>
+    <h4>Create a new post</h4>
+    <input 
+      v-model="title" 
+      type="text" 
+      class="input" 
+      placeholder="Add Title">
+    <input 
+      v-model="body" 
+      type="text" 
+      class="input" 
+      placeholder="Add Text">
+    <button class="btn" @click="createPost">Add new post</button>
+  </form>
+  <div class="post" v-for="post in posts">
+    <div>
+      Post title: <strong>{{ post.title }}</strong>
     </div>
-  </header>
-
-  <RouterView />
+    <div>
+      Post text: <strong>{{ post.body }}</strong>
+    </div>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+<script>
+export default {
+  data() {
+    return {
+      likes: 0,
+      dislikes: 0,
+      posts: [
+        {id: 1, title: 'vue', body: 'asdflasjd asdfj;askdjf asdfasdf asdf'},
+        {id: 2, title: 'react', body: 'lorem asdfasdfas asdfasd afsd'},
+        {id: 3, title: 'angular', body: 'asdflasjd asdfj;askdjf '}
+      ],
+      title: '',
+      body: ''
+    }
+  },
+  methods: {
+    addLike() {
+      this.likes++
+    },
+    addDisLike() {
+      this.dislikes++
+    },
+    createPost() {
+      const newPost = {
+        id: Date.now(),
+        title: this.title,
+        body: this.body
+      }
+      if(this.title && this.body) {
+        this.posts.push(newPost)
+        this.title = '';
+        this.body = '';
+      }
+    }
   }
+}
+</script>
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  margin: 15px;
+}
+.post {
+  padding: 15px;
+  border: 2px solid green;
+  margin-top: 15px;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+.input {
+  border: 1px solid green;
+  padding: 10px 15px;
+  margin-top: 15px;
+}
+.btn {
+  color: #42b983;
+  position: relative;
+  place-content: center;
+  place-items: center;
+  width: fit-content;
+  border-radius: 99px;
+  letter-spacing: 0.05em;
+  border: 1px solid #42b983;
+  text-decoration: none;
+  text-transform: uppercase;
+  margin-top: 15px;
+  padding: 0.5rem 1.5rem;
+  white-space: nowrap;
+  font-weight: 700;
+  outline: none;
+  background: #fff;
+  transition: all 0.22s;
+}
+.btn:hover {
+    cursor: pointer;
+    opacity: 0.8;
 }
 </style>
