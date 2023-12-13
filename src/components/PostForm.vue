@@ -16,11 +16,7 @@
 </template>
 
 <script>
-import MainButton from './UI/MainButton.vue';
 export default {
-  components: {
-    MainButton
-  },
   data() {
     return {
       post: {

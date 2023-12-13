@@ -4,6 +4,12 @@
   </button>
 </template>
 
+<!-- <script>
+export default {
+  name: 'MainButton'
+}
+</script> -->
+
 <style>
 .btn {
   color: #42b983;
