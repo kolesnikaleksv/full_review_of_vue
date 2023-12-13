@@ -11,12 +11,16 @@
       type="text" 
       class="input" 
       placeholder="Add Text">
-    <button class="btn" @click="createPost">Add new post</button>
+    <MainButton class="btn primary" @click="createPost">Add new post</MainButton>
   </form>
 </template>
 
 <script>
+import MainButton from './UI/MainButton.vue';
 export default {
+  components: {
+    MainButton
+  },
   data() {
     return {
       post: {
