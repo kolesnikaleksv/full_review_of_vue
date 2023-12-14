@@ -1,20 +1,28 @@
 <template>
   <Liker :likes="likes" :dislikes="dislikes"/>
   <hr/>
-  <MainButton class="btn primary" @click="openPopup">
-    Create new post
-  </MainButton>
-  <MainButton class="btn primary" @click="fetchPosts">
-    fetch posts
-  </MainButton>
+  <div class="tools">
+    <div>
+      <MainButton class="btn primary" @click="openPopup">
+        Create new post
+      </MainButton>
+      <MainButton class="btn primary" @click="fetchPosts">
+        fetch posts
+      </MainButton>
+    </div>
+    <my-select 
+      v-model="selectedSort"
+      :options="sortOptions"
+      />
+  </div>
   <my-dialog v-model:show="visibleDialog">
     <PostForm @create="createPost"/>
   </my-dialog>
-  
   <PostList 
-    :posts="posts" 
-    @remove="removePost"/>
-    
+    :posts="sortedPosts" 
+    @remove="removePost"
+    v-if="!isFetching"/>
+  <h2 v-else>Loading...</h2>
 </template>
 
 <script>
@@ -32,7 +40,13 @@ export default {
       likes: 0,
       dislikes: 0,
       visibleDialog: false,
-      posts: []
+      isFetching: true,
+      posts: [],
+      selectedSort: '',
+      sortOptions: [
+        {value: 'title', name: 'Sort by name'},
+        {value: 'body', name: 'Sort by text'},
+      ],
     }
   },
   methods: {
@@ -46,25 +60,33 @@ export default {
     openPopup() {
       this.visibleDialog = true
     },
-    fetchPosts() {
-       axios.get('https://jsonplaceholder.typicode.com/posts?_limit=5')
-        .then(res => {
-          this.posts = [...this.posts, ...res.data]
-        })
+    async fetchPosts() {
+      try{
+        this.isFetching = true;
+        const responce = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=5');
+        this.posts = [...this.posts, ...responce.data];
+      } catch(e) {
+        alert('Error')
+      } finally {
+        this.isFetching = false;
+      }
     },
-    // async fetchPosts() {
-    //   try{
-    //     const responce = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=5');
-    //     // this.posts = responce.data;
-    //     this.posts = [...this.posts, ...responce.data]
-    //   } catch(e) {
-    //     alert('Error')
-    //   }
-    // }
   },
   mounted() {
     this.fetchPosts();
-  }
+  },
+  computed: {
+    sortedPosts(){
+      return [...this.posts].sort((post1, post2) =>  post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]))
+    }
+  },
+  // watch: {
+  //   selectedSort(newValue){
+  //     this.posts.sort((post1, post2) => {
+  //       return post1[newValue]?.localeCompare(post2[newValue])
+  //     })
+  //   }
+  // }
 }
 </script>
 
@@ -76,5 +98,10 @@ export default {
 }
 body {
   margin: 15px;
+}
+.tools {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent>
+  <form name="baseForm" @submit.prevent>
     <h4>Create a new post</h4>
       <BaseInput
         v-model="post.title" 
