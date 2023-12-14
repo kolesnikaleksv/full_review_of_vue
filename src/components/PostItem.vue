@@ -8,7 +8,7 @@
         Post text: <strong>{{ post.body }}</strong>
       </div>
     </div>
-      <MainButton class="btn danger">Delete post</MainButton>
+      <MainButton class="btn danger" @click="$emit('remove', post)">Delete post</MainButton>
   </div>
 </template>
 
