@@ -4,6 +4,9 @@
   <MainButton class="btn primary" @click="openPopup">
     Create new post
   </MainButton>
+  <MainButton class="btn primary" @click="fetchPosts">
+    fetch posts
+  </MainButton>
   <my-dialog v-model:show="visibleDialog">
     <PostForm @create="createPost"/>
   </my-dialog>
@@ -11,12 +14,14 @@
   <PostList 
     :posts="posts" 
     @remove="removePost"/>
+    
 </template>
 
 <script>
 import PostForm from './components/PostForm.vue'
 import PostList from '@/components/PostList.vue'
 import Liker from '@/components/Liker.vue'
+import axios from 'axios'
 
 export default {
   components: {
@@ -26,12 +31,8 @@ export default {
     return {
       likes: 0,
       dislikes: 0,
-      visibleDialog: true,
-      posts: [
-        {id: 1, title: 'vue', body: 'asdflasjd asdfj;askdjf asdfasdf asdf'},
-        {id: 2, title: 'react', body: 'lorem asdfasdfas asdfasd afsd'},
-        {id: 3, title: 'angular', body: 'asdflasjd asdfj;askdjf '}
-      ]
+      visibleDialog: false,
+      posts: []
     }
   },
   methods: {
@@ -42,9 +43,24 @@ export default {
     removePost(post) {
       this.posts = this.posts.filter(item => item.id !== post.id)
     },
-    openPopup() {console.log('hello')
+    openPopup() {
       this.visibleDialog = true
-    }
+    },
+    fetchPosts() {
+       axios.get('https://jsonplaceholder.typicode.com/posts?_limit=5')
+        .then(res => {
+          this.posts = [...this.posts, ...res.data]
+        })
+    },
+    // async fetchPosts() {
+    //   try{
+    //     const responce = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=5');
+    //     this.posts = responce.data;
+    //     console.log(this.posts)
+    //   } catch(e) {
+    //     alert('Error')
+    //   }
+    // }
   }
 }
 </script>

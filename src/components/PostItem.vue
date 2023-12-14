@@ -30,6 +30,7 @@ export default {
   margin-top: 15px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 .danger {
   margin: 0;

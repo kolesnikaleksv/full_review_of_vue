@@ -17,6 +17,7 @@ export default {
   place-content: center;
   place-items: center;
   width: fit-content;
+  height: fit-content;
   border-radius: 99px;
   letter-spacing: 0.05em;
   border: 1px solid #42b983;
