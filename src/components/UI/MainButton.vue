@@ -4,11 +4,11 @@
   </button>
 </template>
 
-<!-- <script>
+<script>
 export default {
   name: 'MainButton'
 }
-</script> -->
+</script>
 
 <style>
 .btn {

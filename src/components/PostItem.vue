@@ -31,10 +31,6 @@ export default {
   display: flex;
   justify-content: space-between;
 }
-.post__button {
-  display: flex;
-  align-items: center;
-}
 .danger {
   margin: 0;
 }

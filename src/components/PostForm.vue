@@ -1,16 +1,18 @@
 <template>
   <form @submit.prevent>
     <h4>Create a new post</h4>
-    <input 
-      v-model="post.title" 
-      type="text" 
-      class="input" 
-      placeholder="Add Title">
-    <input 
-      v-model="post.body" 
-      type="text" 
-      class="input" 
-      placeholder="Add Text">
+      <BaseInput
+        v-model="post.title" 
+        type="text" 
+        class="input" 
+        placeholder="Add Title"
+      />
+      <BaseInput
+        v-model="post.body" 
+        type="text" 
+        class="input" 
+        placeholder="Add Text"
+      />
     <MainButton class="btn primary" @click="createPost">Add new post</MainButton>
   </form>
 </template>
@@ -41,15 +43,9 @@ export default {
 </script>
 
 <style>
-
 form {
   display: flex;
   flex-direction: column;
-  margin-top: 15px;
-}
-.input {
-  border: 1px solid green;
-  padding: 10px 15px;
   margin-top: 15px;
 }
 </style>
