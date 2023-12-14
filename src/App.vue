@@ -55,12 +55,15 @@ export default {
     // async fetchPosts() {
     //   try{
     //     const responce = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=5');
-    //     this.posts = responce.data;
-    //     console.log(this.posts)
+    //     // this.posts = responce.data;
+    //     this.posts = [...this.posts, ...responce.data]
     //   } catch(e) {
     //     alert('Error')
     //   }
     // }
+  },
+  mounted() {
+    this.fetchPosts();
   }
 }
 </script>
