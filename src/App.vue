@@ -1,7 +1,13 @@
 <template>
   <Liker :likes="likes" :dislikes="dislikes"/>
   <hr/>
-  <PostForm @create="createPost"/>
+  <MainButton class="btn primary" @click="openPopup">
+    Create new post
+  </MainButton>
+  <my-dialog v-model:show="visibleDialog">
+    <PostForm @create="createPost"/>
+  </my-dialog>
+  
   <PostList 
     :posts="posts" 
     @remove="removePost"/>
@@ -20,6 +26,7 @@ export default {
     return {
       likes: 0,
       dislikes: 0,
+      visibleDialog: true,
       posts: [
         {id: 1, title: 'vue', body: 'asdflasjd asdfj;askdjf asdfasdf asdf'},
         {id: 2, title: 'react', body: 'lorem asdfasdfas asdfasd afsd'},
@@ -30,9 +37,13 @@ export default {
   methods: {
     createPost(post) {
       this.posts.push(post);
+      this.visibleDialog = false;
     },
     removePost(post) {
       this.posts = this.posts.filter(item => item.id !== post.id)
+    },
+    openPopup() {console.log('hello')
+      this.visibleDialog = true
     }
   }
 }
