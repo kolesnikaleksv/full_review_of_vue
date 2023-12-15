@@ -1,6 +1,9 @@
 <template>
   <Liker :likes="likes" :dislikes="dislikes"/>
   <hr/>
+  <BaseInput class="width-item"
+    v-model="searchQuery"
+    placeholder="Search..."/>
   <div class="tools">
     <div>
       <MainButton class="btn primary" @click="openPopup">
@@ -43,6 +46,7 @@ export default {
       isFetching: true,
       posts: [],
       selectedSort: '',
+      searchQuery: '',
       sortOptions: [
         {value: 'title', name: 'Sort by name'},
         {value: 'body', name: 'Sort by text'},
@@ -77,9 +81,18 @@ export default {
   },
   computed: {
     sortedPosts(){
-      return [...this.posts].sort((post1, post2) =>  post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]))
-    }
-  },
+      // return [...this.posts].sort((post1, post2) =>  post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]))
+      // .filter(post => post.title.includes(this.searchQuery))
+      // long code to clarify our actions / it will be removed in next commit
+      let sortedPosts = [...this.posts].sort((post1, post2) =>  post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]));
+      let sortedAndSerchedPosts = sortedPosts.filter(post => post.title.toLowerCase().includes(this.searchQuery.toLowerCase()));
+      return sortedAndSerchedPosts;
+      }
+    },
+    sortedAndSerchedPosts() {
+      // we can't do this, I think we can't call another function / it will be removed in next commit
+      // return this.sortedPosts().filter(post => post.title.includes(this.searchQuery));
+    },
   // watch: {
   //   selectedSort(newValue){
   //     this.posts.sort((post1, post2) => {
@@ -103,5 +116,8 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.width-item {
+  width: 100%;
 }
 </style>

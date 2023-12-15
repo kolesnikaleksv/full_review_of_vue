@@ -3,14 +3,12 @@
     <h4>Create a new post</h4>
       <BaseInput
         v-model="post.title" 
-        type="text" 
-        class="input" 
+        type="text"
         placeholder="Add Title"
       />
       <BaseInput
         v-model="post.body" 
-        type="text" 
-        class="input" 
+        type="text"
         placeholder="Add Text"
       />
     <MainButton class="btn primary" @click="createPost">Add new post</MainButton>

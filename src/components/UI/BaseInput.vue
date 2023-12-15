@@ -17,9 +17,10 @@
 </script>
 
 <style>
-.input {
+input {
   border: 1px solid green;
   padding: 10px 15px;
   margin-top: 15px;
+  font-size: 18px;
 }
 </style>

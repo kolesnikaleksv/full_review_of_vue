@@ -3,11 +3,11 @@
     <h2>List of posts</h2>
     <transition-group name="list-post">
       <PostItem 
-      v-if="posts.length > 0"
-      v-for="post in posts" 
-      :post="post"
-      :key="post.id"
-      @remove="$emit('remove', post)"/>
+        v-if="posts.length > 0"
+        v-for="post in posts" 
+        :post="post"
+        :key="post.id"
+        @remove="$emit('remove', post)"/>
       <h2 v-else>There are not post here. Create your one</h2> 
     </transition-group>
    </div>
