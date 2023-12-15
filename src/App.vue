@@ -26,18 +26,10 @@
     @remove="removePost"
     v-if="!isFetching"/>
   <h2 v-else>Loading...</h2>
-  <div class="page__wrapper">
-    <div 
-      class="page"
-      v-for="pageNumber in totalPages"
-      :key="pageNumber"
-      :class="{ 
-        'current-page' : page === pageNumber
-       }"
-       @click="changePage(pageNumber)">
-      {{ pageNumber }}
-    </div>
-  </div>
+  <my-pagination
+    :totalPages="totalPages"
+    :page="page"
+    v-model="page"/>
 </template>
 
 <script>
@@ -60,8 +52,8 @@ export default {
       selectedSort: '',
       searchQuery: '',
       page: 1,
-      limit: 5,
-      totalPages: 0,
+      limit: 4,
+      totalPages: 2,
       sortOptions: [
         {value: 'title', name: 'Sort by name'},
         {value: 'body', name: 'Sort by text'},
@@ -97,10 +89,6 @@ export default {
         this.isFetching = false;
       }
     },
-    changePage(pageNumber) {
-      this.page = pageNumber;
-      // this.fetchPosts();
-    }
   },
   mounted() {
     this.fetchPosts();
@@ -109,15 +97,9 @@ export default {
     sortedPosts(){
       return [...this.posts].sort((post1, post2) =>  post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]))
       .filter(post => post.title.includes(this.searchQuery))
-      }
-    },
-   
+    }
+  },
   watch: {
-    // selectedSort(newValue){
-    //   this.posts.sort((post1, post2) => {
-    //     return post1[newValue]?.localeCompare(post2[newValue])
-    //   })
-    // }
     page() {
       this.fetchPosts();
     }
@@ -141,25 +123,5 @@ body {
 }
 .width-item {
   width: 100%;
-}
-.page__wrapper {
-  display: flex;
-  flex-direction: row;
-  margin-top: 15px;
-  justify-content: center;
-}
-.page {
-  border: 2px solid rgba(0, 0, 0, 0.5);
-  margin: 5px;
-  padding: 2px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.page:hover {
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
-  transition: box-shadow 0.2s;
-}
-.current-page {
-  border: 2px solid teal;
 }
 </style>
