@@ -1,5 +1,5 @@
 <template>
-  <Liker :likes="likes" :dislikes="dislikes"/>
+  <!-- <Liker :likes="likes" :dislikes="dislikes"/> -->
   <hr/>
   <BaseInput class="width-item"
     v-model="searchQuery"
@@ -26,6 +26,18 @@
     @remove="removePost"
     v-if="!isFetching"/>
   <h2 v-else>Loading...</h2>
+  <div class="page__wrapper">
+    <div 
+      class="page"
+      v-for="pageNumber in totalPages"
+      :key="pageNumber"
+      :class="{ 
+        'current-page' : page === pageNumber
+       }"
+       @click="changePage(pageNumber)">
+      {{ pageNumber }}
+    </div>
+  </div>
 </template>
 
 <script>
@@ -47,6 +59,9 @@ export default {
       posts: [],
       selectedSort: '',
       searchQuery: '',
+      page: 1,
+      limit: 5,
+      totalPages: 0,
       sortOptions: [
         {value: 'title', name: 'Sort by name'},
         {value: 'body', name: 'Sort by text'},
@@ -67,39 +82,46 @@ export default {
     async fetchPosts() {
       try{
         this.isFetching = true;
-        const responce = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=5');
-        this.posts = [...this.posts, ...responce.data];
+        const responce = await axios.get('https://jsonplaceholder.typicode.com/posts', {
+          params: {
+            _page: this.page,
+            _limit: this.limit
+          }
+        });
+        this.totalPages = Math.ceil(responce.headers['x-total-count'] / this.limit)
+        // this.posts = [...this.posts, ...responce.data];
+        this.posts = responce.data;
       } catch(e) {
         alert('Error')
       } finally {
         this.isFetching = false;
       }
     },
+    changePage(pageNumber) {
+      this.page = pageNumber;
+      // this.fetchPosts();
+    }
   },
   mounted() {
     this.fetchPosts();
   },
   computed: {
     sortedPosts(){
-      // return [...this.posts].sort((post1, post2) =>  post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]))
-      // .filter(post => post.title.includes(this.searchQuery))
-      // long code to clarify our actions / it will be removed in next commit
-      let sortedPosts = [...this.posts].sort((post1, post2) =>  post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]));
-      let sortedAndSerchedPosts = sortedPosts.filter(post => post.title.toLowerCase().includes(this.searchQuery.toLowerCase()));
-      return sortedAndSerchedPosts;
+      return [...this.posts].sort((post1, post2) =>  post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]))
+      .filter(post => post.title.includes(this.searchQuery))
       }
     },
-    sortedAndSerchedPosts() {
-      // we can't do this, I think we can't call another function / it will be removed in next commit
-      // return this.sortedPosts().filter(post => post.title.includes(this.searchQuery));
-    },
-  // watch: {
-  //   selectedSort(newValue){
-  //     this.posts.sort((post1, post2) => {
-  //       return post1[newValue]?.localeCompare(post2[newValue])
-  //     })
-  //   }
-  // }
+   
+  watch: {
+    // selectedSort(newValue){
+    //   this.posts.sort((post1, post2) => {
+    //     return post1[newValue]?.localeCompare(post2[newValue])
+    //   })
+    // }
+    page() {
+      this.fetchPosts();
+    }
+  }
 }
 </script>
 
@@ -119,5 +141,25 @@ body {
 }
 .width-item {
   width: 100%;
+}
+.page__wrapper {
+  display: flex;
+  flex-direction: row;
+  margin-top: 15px;
+  justify-content: center;
+}
+.page {
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  margin: 5px;
+  padding: 2px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.page:hover {
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+  transition: box-shadow 0.2s;
+}
+.current-page {
+  border: 2px solid teal;
 }
 </style>
