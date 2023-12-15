@@ -26,10 +26,11 @@
     @remove="removePost"
     v-if="!isFetching"/>
   <h2 v-else>Loading...</h2>
-  <my-pagination
+  <!-- <my-pagination
     :totalPages="totalPages"
     :page="page"
-    v-model="page"/>
+    v-model="page"/> -->
+  <div ref="observer" class="observer"></div>
 </template>
 
 <script>
@@ -89,9 +90,36 @@ export default {
         this.isFetching = false;
       }
     },
+    async loadMorePosts() {
+      try{
+        // this.isFetching = true;
+        this.page++
+        const responce = await axios.get('https://jsonplaceholder.typicode.com/posts', {
+          params: {
+            _page: this.page,
+            _limit: this.limit
+          }
+        });
+        this.totalPages = Math.ceil(responce.headers['x-total-count'] / this.limit)
+        this.posts = [...this.posts, ...responce.data];
+      } catch(e) {
+        alert('Error')
+      }
+    },
   },
   mounted() {
     this.fetchPosts();
+    const options = {
+      rootMargin: "0px",
+      threshold: 1.0,
+    };
+    const callback = (entries, observer) => {
+      if(entries[0].isIntersecting && this.page < this.totalPages) {
+        this.loadMorePosts();
+      }
+    };
+    const observer = new IntersectionObserver(callback, options);
+    observer.observe(this.$refs.observer)
   },
   computed: {
     sortedPosts(){
@@ -99,11 +127,11 @@ export default {
       .filter(post => post.title.includes(this.searchQuery))
     }
   },
-  watch: {
-    page() {
-      this.fetchPosts();
-    }
-  }
+  // watch: {
+  //   page() {
+  //     this.fetchPosts();
+  //   }
+  // }
 }
 </script>
 
@@ -123,5 +151,10 @@ body {
 }
 .width-item {
   width: 100%;
+}
+.observer {
+  width: 100%;
+  height: 10px;
+  background: green;
 }
 </style>
