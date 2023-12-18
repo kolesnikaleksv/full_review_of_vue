@@ -5,6 +5,7 @@
         v-model="post.title" 
         type="text"
         placeholder="Add Title"
+        v-focus
       />
       <BaseInput
         v-model="post.body" 

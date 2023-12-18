@@ -3,7 +3,8 @@
   <hr/>
   <BaseInput class="width-item"
     v-model="searchQuery"
-    placeholder="Search..."/>
+    placeholder="Search..."
+    v-focus/>
   <div class="tools">
     <div>
       <MainButton class="btn primary" @click="openPopup">
@@ -31,7 +32,7 @@
     :page="page"
     v-model="page"/> -->
   <!-- <div ref="observer" class="observer"></div> -->
-  
+
   <!-- move observe function to custom directives -->
   <!-- <div v-intersection="{name: 'alex'}" class="observer"></div> -->
   <div v-intersection="loadMorePosts" class="observer"></div>
