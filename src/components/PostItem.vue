@@ -3,7 +3,10 @@
     <div>
       <div>{{ post.id }}</div>
       <div>
+        <RouterLink :to="{path: `/posts/` + post.id}">
+        <!-- <RouterLink :to="{name: 'post-page', params: {id: post.id}}"> -->
         Post title: <strong>{{ post.title }}</strong>
+        </RouterLink>
       </div>
       <div>
         Post text: <strong>{{ post.body }}</strong>
@@ -14,6 +17,7 @@
 </template>
 
 <script>
+import { RouterLink } from 'vue-router';
 export default {
   props: {
     post: {

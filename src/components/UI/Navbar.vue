@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar">
     <MainButton class="btn primary"><RouterLink to="/">Home</RouterLink></MainButton>
-    <MainButton class="btn primary"><RouterLink to="/post">Posts</RouterLink></MainButton>
+    <MainButton class="btn primary"><RouterLink to="/posts">Posts</RouterLink></MainButton>
   </nav>
 </template>
 
