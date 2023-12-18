@@ -4,7 +4,6 @@
       <div>{{ post.id }}</div>
       <div>
         <RouterLink :to="{path: `/posts/` + post.id}">
-        <!-- <RouterLink :to="{name: 'post-page', params: {id: post.id}}"> -->
         Post title: <strong>{{ post.title }}</strong>
         </RouterLink>
       </div>
@@ -12,6 +11,7 @@
         Post text: <strong>{{ post.body }}</strong>
       </div>
     </div>
+      <MainButton class="btn primary" @click="$router.push(`/tutor/${post.id}`)">Open</MainButton>
       <MainButton class="btn danger" @click="$emit('remove', post)">Delete post</MainButton>
   </div>
 </template>
@@ -39,5 +39,9 @@ export default {
 }
 .danger {
   margin: 0;
+}
+.btn {
+  margin: 0;
+  margin-left: 15px;
 }
 </style>
