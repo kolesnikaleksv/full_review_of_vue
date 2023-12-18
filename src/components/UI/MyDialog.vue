@@ -7,8 +7,10 @@
 </template>
 
 <script>
+import toggleMixin from '@/mixins/toggleMixin.js'
   export default {
     name: 'my-dialog',
+    mixins: [toggleMixin],
     props: {
       show: {
         type: Boolean,
