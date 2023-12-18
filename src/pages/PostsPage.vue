@@ -30,7 +30,11 @@
     :totalPages="totalPages"
     :page="page"
     v-model="page"/> -->
-  <div ref="observer" class="observer"></div>
+  <!-- <div ref="observer" class="observer"></div> -->
+  
+  <!-- move observe function to custom directives -->
+  <!-- <div v-intersection="{name: 'alex'}" class="observer"></div> -->
+  <div v-intersection="loadMorePosts" class="observer"></div>
 </template>
 
 <script>
@@ -109,17 +113,17 @@ export default {
   },
   mounted() {
     this.fetchPosts();
-    const options = {
-      rootMargin: "0px",
-      threshold: 1.0,
-    };
-    const callback = (entries, observer) => {
-      if(entries[0].isIntersecting && this.page < this.totalPages) {
-        this.loadMorePosts();
-      }
-    };
-    const observer = new IntersectionObserver(callback, options);
-    observer.observe(this.$refs.observer)
+    // const options = {
+    //   rootMargin: "0px",
+    //   threshold: 1.0,
+    // };
+    // const callback = (entries, observer) => {
+    //   if(entries[0].isIntersecting && this.page < this.totalPages) {
+    //     this.loadMorePosts();
+    //   }
+    // };
+    // const observer = new IntersectionObserver(callback, options);
+    // observer.observe(this.$refs.observer)
   },
   computed: {
     sortedPosts(){
